@@ -1,0 +1,33 @@
+Hangman game
+Hello, this is a Hangman game,
+to start playing, enter 1 on the keyboard!
+[1] - Start
+[2] - Help
+[3] - Exit
+
+Okay, let's choose the difficulty level
+[1] - Easy
+[2] - Medium
+[3] - Hard
+[4] - Skip and choose random
+
+And choose a category
+[1] - Animals
+[2] - Cities
+[3] - Fruits and Vegetables
+[4] - Skip and choose random
+
+
+The word is hidden, now enter one letter at a time to guess
+__________
+If you guess, you are closer to victory,
+if you try incorrectly, elements of the gallows will be added
+
+______
+|/   |
+|    O
+|   /|\
+|    |
+|   / \
+|
+---------

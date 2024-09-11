@@ -1,0 +1,72 @@
+{
+    "1": {
+        "1": [
+            "CAT",
+            "DOG",
+            "BIRD",
+            "FISH",
+            "BEAR",
+            "BEBRA"
+        ],
+        "2": [
+            "LION",
+            "TIGER",
+            "WOLF",
+            "SNAKE",
+            "MONKEY"
+        ],
+        "3": [
+            "HIPPO",
+            "RHINO",
+            "ZEBRA",
+            "PENGUIN",
+            "ELEPHANT"
+        ]
+    },
+    "2": {
+        "1": [
+            "PARIS",
+            "LONDON",
+            "ROME",
+            "TOKYO",
+            "NEW YORK"
+        ],
+        "2": [
+            "MADRID",
+            "BERLIN",
+            "SYDNEY",
+            "CHICAGO",
+            "LOS ANGELES"
+        ],
+        "3": [
+            "AMSTERDAM",
+            "DUBLIN",
+            "VIENNA",
+            "SAN FRANCISCO",
+            "SEATTLE"
+        ]
+    },
+    "3": {
+        "1": [
+            "APPLE",
+            "ORANGE",
+            "BANANA",
+            "GRAPE",
+            "PEAR"
+        ],
+        "2": [
+            "STRAWBERRY",
+            "BLUEBERRY",
+            "WATERMELON",
+            "PINEAPPLE",
+            "MANGO"
+        ],
+        "3": [
+            "AVOCADO",
+            "KIWI",
+            "FIG",
+            "ASPARAGUS",
+            "BROCCOLI"
+        ]
+    }
+}
