@@ -1,72 +1,72 @@
 {
     "1": {
         "1": [
-            "CAT",
-            "DOG",
-            "BIRD",
-            "FISH",
-            "BEAR",
-            "BEBRA"
+            "RABBIT",
+            "SQUIRREL",
+            "CHICKEN",
+            "GOAT",
+            "DEER",
+            "SHEEP"
         ],
         "2": [
-            "LION",
-            "TIGER",
-            "WOLF",
-            "SNAKE",
-            "MONKEY"
+            "CHEETAH",
+            "LEOPARD",
+            "HYENA",
+            "CROCODILE",
+            "GORILLA"
         ],
         "3": [
-            "HIPPO",
-            "RHINO",
-            "ZEBRA",
-            "PENGUIN",
-            "ELEPHANT"
+            "GIRAFFE",
+            "JAGUAR",
+            "OCTOPUS",
+            "DOLPHIN",
+            "WHALE"
         ]
     },
     "2": {
         "1": [
-            "PARIS",
-            "LONDON",
-            "ROME",
-            "TOKYO",
-            "NEW YORK"
+            "MOSCOW",
+            "BEIJING",
+            "CAIRO",
+            "SEOUL",
+            "MEXICO CITY"
         ],
         "2": [
-            "MADRID",
-            "BERLIN",
-            "SYDNEY",
-            "CHICAGO",
-            "LOS ANGELES"
+            "ISTANBUL",
+            "BUENOS AIRES",
+            "JOHANNESBURG",
+            "BANGKOK",
+            "HONG KONG"
         ],
         "3": [
-            "AMSTERDAM",
-            "DUBLIN",
-            "VIENNA",
-            "SAN FRANCISCO",
-            "SEATTLE"
+            "BRUSSELS",
+            "OSLO",
+            "STOCKHOLM",
+            "VANCOUVER",
+            "TORONTO"
         ]
     },
     "3": {
         "1": [
-            "APPLE",
-            "ORANGE",
-            "BANANA",
-            "GRAPE",
-            "PEAR"
+            "LEMON",
+            "LIME",
+            "MELON",
+            "CHERRY",
+            "PLUM"
         ],
         "2": [
-            "STRAWBERRY",
-            "BLUEBERRY",
-            "WATERMELON",
-            "PINEAPPLE",
-            "MANGO"
+            "RASPBERRY",
+            "BLACKBERRY",
+            "CANTALOUPE",
+            "PAPAYA",
+            "LYCHEE"
         ],
         "3": [
-            "AVOCADO",
-            "KIWI",
-            "FIG",
-            "ASPARAGUS",
-            "BROCCOLI"
+            "MUSHROOM",
+            "ZUCCHINI",
+            "EGGPLANT",
+            "GARLIC",
+            "ONION"
         ]
     }
 }
