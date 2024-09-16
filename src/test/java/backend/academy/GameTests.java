@@ -34,6 +34,23 @@ public class GameTests {
     }
 
     @Test
+    public void testCorrectDisplayUpdate() {
+        GameProcessInterface gpi = new GameProcessInterface(System.in, System.out);
+        gpi.hideWord("кот");
+        gpi.openLetterInWord("кот", 'к');
+        assertEquals("к _ _", gpi.currentDisplay().toString().trim());
+    }
+
+    @Test
+    public void testCaseInsensitiveInput() {
+        GameProcessInterface gpi = new GameProcessInterface(System.in, System.out);
+        gpi.hideWord("кот");
+        assertTrue(gpi.foundLetter("кот", 'К'));
+        gpi.openLetterInWord("кот", 'к');
+        assertEquals("к _ _", gpi.currentDisplay().toString().trim());
+    }
+
+    @Test
     public void testInvalidWordLengthStopsGame() {
         // Некорректное слово с длиной 1 символ
         List<String> word = List.of("к", "Подсказка: слишком короткое слово");
@@ -49,5 +66,24 @@ public class GameTests {
             gameProcessInterface.render(word);
         });
         assertEquals("Слово слишком короткое для игры", exception.getMessage());
+    }
+
+    @Test
+    public void testExceedingAttempts() throws Exception {
+        GameProcessInterface gpi = new GameProcessInterface(System.in, System.out);
+        gpi.render(List.of("бегемот", "Подсказка"));
+        for (int i = 0; i < 7; i++) {
+            gpi.foundLetter("бегемот", 'я'); // Incorrect letter to decrement attempts
+        }
+        assertFalse(gpi.winner());
+    }
+
+    @Test
+    public void testInputStringTooLong() {
+        GameProcessInterface gpi = new GameProcessInterface(System.in, System.out);
+        gpi.hideWord("кот");
+        assertTrue(gpi.foundLetter("кот", 'к'));
+        gpi.openLetterInWord("кот", 'к');
+        assertEquals("к _ _", gpi.currentDisplay().toString().trim());
     }
 }
