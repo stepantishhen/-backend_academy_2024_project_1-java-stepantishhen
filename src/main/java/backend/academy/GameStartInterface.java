@@ -1,6 +1,5 @@
 package backend.academy;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -9,13 +8,12 @@ import java.security.SecureRandom;
 import java.util.Scanner;
 import lombok.Getter;
 
-@SuppressWarnings({"checkstyle:MultipleStringLiterals"})
-@SuppressFBWarnings("DM_EXIT")
 public class GameStartInterface {
     private static final int MAX_MENU_NUMBER = 3;
     private final Scanner scanner;
     private final PrintStream out;
     private final SecureRandom random;
+    private final String incorrectInputMessage = "Некорректный ввод";
 
     @Getter private Integer selectedDifficultyLevel;
     @Getter private Integer selectedCategory;
@@ -26,26 +24,25 @@ public class GameStartInterface {
         this.random = new SecureRandom();
     }
 
-    private void askStart(String message) {
+    protected void askStart(String message) {
         out.println(message);
         String line = scanner.nextLine();
         switch (line) {
             case "1":
                 break;
             case "2":
-                out.println("Help info");
+                out.println("Правила игры");
                 askStart(message);
                 break;
             case "3":
-                System.exit(0);
-                break;
+                throw new RuntimeException("Программа завершена");
             default:
-                out.println("Invalid input");
+                out.println(incorrectInputMessage);
                 askStart(message);
         }
     }
 
-    private int ask(String message) {
+    protected int ask(String message) {
         out.println(message);
         String line = scanner.nextLine();
         switch (line) {
@@ -56,30 +53,30 @@ public class GameStartInterface {
             case "4", "":
                 return random.nextInt(MAX_MENU_NUMBER) + 1;
             default:
-                out.println("Invalid input");
+                out.println(incorrectInputMessage);
                 return ask(message);
         }
     }
 
     public void render() {
         askStart("""
-            Hangman game
-            Hello, this is a Hangman game,
-            to start playing, enter 1 on the keyboard!
-            [1] - Start
-            [2] - Help
-            [3] - Exit""");
+            Игра Виселица
+            Добро пожаловать в игру Виселица,
+            для старта введи на клавиатуре 1 и нажми Enter!
+            [1] - Начать
+            [2] - Правила
+            [3] - Выйти""");
         this.selectedDifficultyLevel = ask("""
-            Okay, let's choose the difficulty level
-            [1] - Easy
-            [2] - Medium
-            [3] - Hard
-            [4] - Skip and choose random""");
+            Отлично, давай выберем уровень сложности
+            [1] - Легко
+            [2] - Средне
+            [3] - Сложно
+            [4] - Пропустить и выбрать рандомно""");
         this.selectedCategory = ask("""
-            And choose a category
-            [1] - Animals
-            [2] - Cities
-            [3] - Fruits and Vegetables
-            [4] - Skip and choose random""");
+            И давай выберем категорию слов
+            [1] - Животные
+            [2] - Города
+            [3] - Фрукты и овощи
+            [4] - Пропустить и выбрать рандомно""");
     }
 }

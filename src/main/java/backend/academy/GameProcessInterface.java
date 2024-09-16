@@ -4,39 +4,52 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Scanner;
-
+import lombok.Getter;
 
 public class GameProcessInterface {
     private final Scanner scanner;
     private final PrintStream out;
-    @SuppressWarnings("checkstyle:MagicNumber")
-    private Integer attempt = 7;
+    // You can edit this constants
+    private final static int ATTEMPTS = 7;
+    private final static Integer SHOW_HINT_ON_ATTEMPT = 4;
     private String avaliableLetters;
-    private StringBuilder currentDisplay;
+    private int attempt;
+    @Getter private StringBuilder currentDisplay;
+    @Getter private boolean winner;
 
     public GameProcessInterface(InputStream in, PrintStream out) {
-        this.scanner = new Scanner(new InputStreamReader(in, StandardCharsets.UTF_8));
+        this.scanner =
+            new Scanner(new InputStreamReader(in, StandardCharsets.UTF_8));
         this.out = out;
-        this.avaliableLetters = "a b c d e f g h i j k l m n o p q r s t u v w x y z";
+        this.avaliableLetters =
+            "а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я";
     }
 
-    public void render(String currentWord) {
-        out.println(
-            """
-            If you guess, you are closer to victory,
-            if you try incorrectly, elements of the gallows will be added"""
+    public void render(List<String> currentWord) throws Exception {
+        attempt = ATTEMPTS;
+        if (currentWord.getFirst().length() < attempt) {
+            throw new IllegalArgumentException("Слово слишком короткое для игры");
+        }
+        out.println("""
+            С каждой верной буквой ты приближаешься к победе,
+            если буква введена неверно - я буду рисовать виселицу и висельника с каждым шагом"""
         );
-        hideWord(currentWord);
+        hideWord(currentWord.getFirst());
         out.println(currentDisplay.toString());
-        boolean winner = false;
+        winner = false;
         while (attempt > 0 && !winner) {
             out.println(avaliableLetters);
-            out.println("Current attempt: " + attempt);
-            out.print("Write letter: ");
-            Character letter = scanner.next().toLowerCase().charAt(0); // to lowerCase
-            if (foundLetter(currentWord, letter)) {
-                openLetterInWord(currentWord, letter);
+            if (attempt == SHOW_HINT_ON_ATTEMPT) {
+                out.println(currentWord.get(1));
+            }
+            out.println("Попыток осталось: " + attempt);
+            out.print("буква>>> ");
+            Character letter =
+                scanner.next().trim().toLowerCase().charAt(0); // to lowerCase
+            if (foundLetter(currentWord.getFirst(), letter)) {
+                openLetterInWord(currentWord.getFirst(), letter);
             } else {
                 attempt--;
             }
@@ -45,44 +58,19 @@ public class GameProcessInterface {
             avaliableLetters = avaliableLetters.replace(letter, ' ');
 
             // Check for win
-            if (checkWin(currentWord)) {
+            if (checkWin(currentWord.getFirst())) {
                 winner = true;
-                out.println("You win!");
+                out.println("Ты выиграл! Поздравляю!");
             }
         }
         if (!winner) {
-            out.println("You lose!");
+            out.println("Ты проиграл!");
         }
     }
 
-    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:MultipleStringLiterals"})
     private void drawGallows() {
-        StringBuilder gallows = new StringBuilder();
-        gallows.append("______\n");
-        gallows.append("|/   |\n");
-        if (attempt <= 6) {
-            gallows.append("|    O\n");
-        } else {
-            gallows.append("|    \n");
-        }
-        if (attempt <= 5) {
-            gallows.append("|   /|\\\n");
-        } else {
-            gallows.append("|    \n");
-        }
-        if (attempt <= 4) {
-            gallows.append("|    |\n");
-        } else {
-            gallows.append("|    \n");
-        }
-        if (attempt <= 3) {
-            gallows.append("|   / \\\n");
-        } else {
-            gallows.append("|    \n");
-        }
-        gallows.append("|\n");
-        gallows.append("---------\n");
-        out.println(gallows.toString());
+        int stageIndex = GallowsStages.getTotalStages() - (ATTEMPTS - attempt) - 1;
+        out.println(GallowsStages.getStage(stageIndex));
     }
 
     public void hideWord(String word) {

@@ -24,30 +24,37 @@ public class Game {
         this.random = new SecureRandom();
     }
 
-    public void start() {
+    public void start() throws Exception {
         gameStartInterface.render();
         Integer category = gameStartInterface.selectedCategory();
         Integer difficulty = gameStartInterface.selectedDifficultyLevel();
-        String randomWord = getRandomWordByDifficultyAndCategory(category, difficulty);
-        gameProcessInterface.render(randomWord);
+        List<String> word = getRandomWordByDifficultyAndCategory(category, difficulty);
+        gameProcessInterface.render(word);
     }
 
-    private String getRandomWordByDifficultyAndCategory(Integer category, Integer difficulty) {
+    protected List<String> getRandomWordByDifficultyAndCategory(Integer category, Integer difficulty) {
         String randomWord = null;
+        String hint = null;
         File file = new File(WORDS_JSON_PATH);
         try (InputStream is = new FileInputStream(file)) {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(is);
             JsonNode categoryNode = rootNode.path(category.toString());
             JsonNode difficultyNode = categoryNode.path(difficulty.toString());
-            List<String> words = mapper.convertValue(difficultyNode, List.class);
+
+            List<JsonNode> words = mapper.convertValue(difficultyNode, List.class);
             if (!words.isEmpty()) {
-                randomWord = words.get(random.nextInt(words.size()));
+                int randomIndex = random.nextInt(words.size());
+                JsonNode wordNode = mapper.convertValue(words.get(randomIndex), JsonNode.class);
+                randomWord = wordNode.get(0).asText();
+                hint = wordNode.get(1).asText();
             }
         } catch (Exception e) {
             System.err.println("Ошибка при чтении JSON файла: " + e.getMessage());
         }
-        return randomWord;
+        assert randomWord != null;
+        assert hint != null;
+        return List.of(randomWord, hint);
     }
 }
 
