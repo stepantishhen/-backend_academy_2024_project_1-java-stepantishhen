@@ -86,8 +86,7 @@ public class GameProcessInterface {
     }
 
     public boolean foundLetter(String word, Character letter) {
-        letter = letter.toString().toLowerCase().charAt(0);
-        return word.toLowerCase().indexOf(letter) != -1;
+        return word.toLowerCase().indexOf(Character.toLowerCase(letter)) != -1;
     }
 
     public void openLetterInWord(String word, Character letter) {

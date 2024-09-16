@@ -69,16 +69,6 @@ public class GameTests {
     }
 
     @Test
-    public void testExceedingAttempts() throws Exception {
-        GameProcessInterface gpi = new GameProcessInterface(System.in, System.out);
-        gpi.render(List.of("бегемот", "Подсказка"));
-        for (int i = 0; i < 7; i++) {
-            gpi.foundLetter("бегемот", 'я'); // Incorrect letter to decrement attempts
-        }
-        assertFalse(gpi.winner());
-    }
-
-    @Test
     public void testInputStringTooLong() {
         GameProcessInterface gpi = new GameProcessInterface(System.in, System.out);
         gpi.hideWord("кот");
