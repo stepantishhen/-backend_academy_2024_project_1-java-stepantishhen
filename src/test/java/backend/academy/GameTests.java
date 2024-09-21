@@ -53,7 +53,7 @@ public class GameTests {
     @Test
     public void testInvalidWordLengthStopsGame() {
         // Некорректное слово с длиной 1 символ
-        List<String> word = List.of("к", "Подсказка: слишком короткое слово");
+        List<String> word = List.of("", "Подсказка: некорректное слово");
 
         // Симуляция ввода
         ByteArrayInputStream in = new ByteArrayInputStream("к\n".getBytes(StandardCharsets.UTF_8));
@@ -65,7 +65,7 @@ public class GameTests {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             gameProcessInterface.render(word);
         });
-        assertEquals("Слово слишком короткое для игры", exception.getMessage());
+        assertEquals("Некорректное слово в словарике!", exception.getMessage());
     }
 
     @Test
@@ -76,4 +76,8 @@ public class GameTests {
         gpi.openLetterInWord("кот", 'к');
         assertEquals("к _ _", gpi.currentDisplay().toString().trim());
     }
+
+    // После превышения заданного количества попыток игра всегда возвращает поражение.
+    // Состояние игры корректно изменяется при угадывании/не угадывании.
+    // Проверка, что при отгадывании ввод строки длиной больше чем 1 (опечатка) приводит к повторному вводу, без изменения состояния.
 }

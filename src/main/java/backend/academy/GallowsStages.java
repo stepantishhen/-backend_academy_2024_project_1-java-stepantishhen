@@ -77,11 +77,11 @@ public class GallowsStages {
         """
     };
 
-    public static String getStage(int index) {
+    protected static String getStage(int index) {
         return STAGES[index];
     }
 
-    public static int getTotalStages() {
+    protected static int getTotalStages() {
         return STAGES.length;
     }
 }

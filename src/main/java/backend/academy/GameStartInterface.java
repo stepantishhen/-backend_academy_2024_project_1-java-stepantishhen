@@ -1,5 +1,6 @@
 package backend.academy;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -8,6 +9,7 @@ import java.security.SecureRandom;
 import java.util.Scanner;
 import lombok.Getter;
 
+@SuppressFBWarnings("DM_EXIT")
 public class GameStartInterface {
     private static final int MAX_MENU_NUMBER = 3;
     private final Scanner scanner;
@@ -18,7 +20,7 @@ public class GameStartInterface {
     @Getter private Integer selectedDifficultyLevel;
     @Getter private Integer selectedCategory;
 
-    public GameStartInterface(InputStream in, PrintStream out) {
+    protected GameStartInterface(InputStream in, PrintStream out) {
         this.scanner = new Scanner(new InputStreamReader(in, StandardCharsets.UTF_8));
         this.out = out;
         this.random = new SecureRandom();
@@ -35,7 +37,8 @@ public class GameStartInterface {
                 askStart(message);
                 break;
             case "3":
-                throw new RuntimeException("Программа завершена");
+                System.exit(0);
+                break;
             default:
                 out.println(incorrectInputMessage);
                 askStart(message);
@@ -45,20 +48,17 @@ public class GameStartInterface {
     protected int ask(String message) {
         out.println(message);
         String line = scanner.nextLine();
-        switch (line) {
-            case "1":
-            case "2":
-            case "3":
-                return Integer.parseInt(line);
-            case "4", "":
-                return random.nextInt(MAX_MENU_NUMBER) + 1;
-            default:
+        return switch (line) {
+            case "1", "2", "3" -> Integer.parseInt(line);
+            case "4", "" -> random.nextInt(MAX_MENU_NUMBER) + 1;
+            default -> {
                 out.println(incorrectInputMessage);
-                return ask(message);
-        }
+                yield ask(message);
+            }
+        };
     }
 
-    public void render() {
+    protected void render() {
         askStart("""
             Игра Виселица
             Добро пожаловать в игру Виселица,
