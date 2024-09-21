@@ -15,7 +15,7 @@ public class GameProcessInterface {
     private final static int ATTEMPTS = 7;
     private final static Integer SHOW_HINT_ON_ATTEMPT = 4;
     private final static String AVAILABLE_LETTERS = "а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я";
-    private int attempt;
+    @Getter private int attempt;
     @Getter private StringBuilder currentDisplay;
     @Getter private boolean winner;
 

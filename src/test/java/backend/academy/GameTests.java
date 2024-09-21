@@ -68,16 +68,56 @@ public class GameTests {
         assertEquals("Некорректное слово в словарике!", exception.getMessage());
     }
 
-    @Test
-    public void testInputStringTooLong() {
-        GameProcessInterface gpi = new GameProcessInterface(System.in, System.out);
-        gpi.hideWord("кот");
-        assertTrue(gpi.foundLetter("кот", 'к'));
-        gpi.openLetterInWord("кот", 'к');
-        assertEquals("к _ _", gpi.currentDisplay().toString().trim());
-    }
-
     // После превышения заданного количества попыток игра всегда возвращает поражение.
+    @Test
+    public void testGameEndsAfterMaxAttempts() throws Exception {
+        // Симуляция ввода неправильных букв
+        ByteArrayInputStream in = new ByteArrayInputStream("a\nb\nc\nd\ne\nf\ng\n".getBytes(StandardCharsets.UTF_8));
+        outContent = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(outContent);
+        gameProcessInterface = new GameProcessInterface(in, out);
+
+        // Симуляция слова "кот"
+        List<String> word = List.of("кот", "Подсказка: домашнее животное");
+        gameProcessInterface.render(word);
+
+        // Ожидается, что игра завершится поражением после 10 попыток
+        assertFalse(gameProcessInterface.winner());
+        assertTrue(outContent.toString().contains("Ты проиграл!"));
+    }
     // Состояние игры корректно изменяется при угадывании/не угадывании.
+    @Test
+    public void testGameEndsOnCorrectGuess() throws Exception {
+        // Симуляция ввода правильных букв
+        ByteArrayInputStream in = new ByteArrayInputStream("к\nо\nт\n".getBytes(StandardCharsets.UTF_8));
+        outContent = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(outContent);
+        gameProcessInterface = new GameProcessInterface(in, out);
+
+        // Симуляция слова "кот"
+        List<String> word = List.of("кот", "Подсказка: домашнее животное");
+        gameProcessInterface.render(word);
+
+        // Ожидается, что игра завершится победой после отгадывания всех букв
+        assertTrue(gameProcessInterface.winner());
+        assertTrue(outContent.toString().contains("Ты выиграл! Поздравляю!"));
+    }
     // Проверка, что при отгадывании ввод строки длиной больше чем 1 (опечатка) приводит к повторному вводу, без изменения состояния.
+    @Test
+    public void testIncorrectInputRePrompts() throws Exception {
+        // Симуляция ввода неправильного символа
+        ByteArrayInputStream in = new ByteArrayInputStream("йцу\nк\nо\nт\n".getBytes(StandardCharsets.UTF_8));
+        outContent = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(outContent);
+        gameProcessInterface = new GameProcessInterface(in, out);
+
+        // Симуляция слова "кот"
+        List<String> word = List.of("кот", "Подсказка: домашнее животное");
+        gameProcessInterface.render(word);
+
+        // Ожидается, что игра запросит ввод буквы снова
+        assertTrue(outContent.toString().contains("буква>>> "));
+        // Проверка, что попытки не уменьшились, так как ввод был неверным
+        assertEquals(7, gameProcessInterface.attempt());
+    }
 }
